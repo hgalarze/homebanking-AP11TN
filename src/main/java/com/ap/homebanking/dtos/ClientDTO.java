@@ -1,13 +1,10 @@
 package com.ap.homebanking.dtos;
 
-import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 public class ClientDTO {
@@ -15,7 +12,7 @@ public class ClientDTO {
     private long id;
     private String firstName;
     private String lastName;
-    private  String email;
+    private String email;
     private Set<AccountDTO> accounts = new HashSet<>();
 
     public ClientDTO(Client client) {
