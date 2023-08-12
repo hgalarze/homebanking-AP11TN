@@ -1,10 +1,12 @@
 package com.ap.homebanking.models;
 
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Client {
@@ -12,13 +14,20 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
+
     private String firstName;
+
     private String lastName;
 
     private String email;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
+
+    // Relationship between Client and Loan
+    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    private Set<ClientLoan> clientLoans = new HashSet<>();
+
 
     public Client() {
     }
@@ -45,6 +54,17 @@ public class Client {
         return email;
     }
 
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public Set<Loan> getLoans() {
+        return this.clientLoans.stream().map(ClientLoan::getLoan).collect(Collectors.toSet());
+    }
+
+    @JsonIgnore
+    public Set<ClientLoan> getClientLoans() { return clientLoans; }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -57,12 +77,12 @@ public class Client {
         this.email = email;
     }
 
-    public Set<Account> getAccounts() {
-        return accounts;
-    }
-
     public void addAccount(Account account) {
         account.setOwner(this);
         accounts.add(account);
+    }
+
+    public void addClientLoan(ClientLoan clientLoan) {
+        this.clientLoans.add(clientLoan);
     }
 }
