@@ -2,16 +2,21 @@ package com.ap.homebanking;
 
 import com.ap.homebanking.models.*;
 import com.ap.homebanking.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
 public class HomebankingApplication {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(HomebankingApplication.class, args);
@@ -23,12 +28,16 @@ public class HomebankingApplication {
                                       AccountRepository accountRepository,
                                       TransactionRepository transactionRepository,
                                       LoanRepository loanRepository,
-                                      ClientLoanRepository clientLoanRepository) {
+                                      ClientLoanRepository clientLoanRepository,
+                                      CardRepository cardRepository) {
         return (args) -> {
 
+            // Admin
+            Client adminClient = new Client("admin", "admin", "admin@mindhub.com", passwordEncoder.encode("admin#001"));
+
             // Clients
-            Client melbaClient = new Client("Melba", "Morel", "melba@mindhub.com");
-            Client hectorClient = new Client("Hector", "Galarze", "hectorgalarze@gmail.com");
+            Client melbaClient = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba#001"));
+            Client hectorClient = new Client("Hector", "Galarze", "hectorgalarze@gmail.com", passwordEncoder.encode("hector#001"));
 
             // Accounts
             Account vin001Account = new Account("VIN001", LocalDate.now(), 5000);
@@ -51,6 +60,31 @@ public class HomebankingApplication {
             ClientLoan clientLoan003 = new ClientLoan(100000d, 24, hectorClient, personalLoan002);
             ClientLoan clientLoan004 = new ClientLoan(200000d, 36, hectorClient, autoLoan003);
 
+            // Cards
+            Card goldCard001 = new Card(melbaClient.getFirstName() + " " + melbaClient.getLastName(),
+                    CardType.DEBIT,
+                    CardColor.GOLD,
+                    "2860 1764 3015 6983",
+                    795,
+                    LocalDate.now(),
+                    LocalDate.now().plusYears(5));
+
+            Card titaniumCredit001 = new Card(melbaClient.getFirstName() + " " + melbaClient.getLastName(),
+                    CardType.CREDIT,
+                    CardColor.TITANIUM,
+                    "4680 5921 7653 6645",
+                    655,
+                    LocalDate.now(),
+                    LocalDate.now().plusYears(5));
+
+            Card silverCredit001 = new Card(hectorClient.getFirstName() + " " + hectorClient.getLastName(),
+                    CardType.CREDIT,
+                    CardColor.SILVER,
+                    "6504 7832 4462 8511",
+                    468,
+                    LocalDate.now(),
+                    LocalDate.now().plusYears(5));
+
             // Relationship Account & Transaction
             vin001Account.addTransaction(transactionDebitVin001);
             vin002Account.addTransaction(transactionCreditVin002);
@@ -66,6 +100,11 @@ public class HomebankingApplication {
             melbaClient.addAccount(vin002Account);
             hectorClient.addAccount(vin003Account);
             hectorClient.addAccount(vin004Account);
+
+            // Relationship Client & Card
+            melbaClient.addCard(goldCard001);
+            melbaClient.addCard(titaniumCredit001);
+            hectorClient.addCard(silverCredit001);
 
             // Save a couple of customers
             clientRepository.save(melbaClient);
@@ -91,6 +130,11 @@ public class HomebankingApplication {
             clientLoanRepository.save(clientLoan002);
             clientLoanRepository.save(clientLoan003);
             clientLoanRepository.save(clientLoan004);
+
+            // Save some Cards
+            cardRepository.save(goldCard001);
+            cardRepository.save(titaniumCredit001);
+            cardRepository.save(silverCredit001);
         };
     }
 
