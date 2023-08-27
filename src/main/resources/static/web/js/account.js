@@ -1,6 +1,5 @@
-const { createApp } = Vue;
+Vue.createApp({
 
-createApp({
     data() {
         return {
             accountInfo: {},

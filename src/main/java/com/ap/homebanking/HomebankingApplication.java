@@ -64,7 +64,7 @@ public class HomebankingApplication {
             Card goldCard001 = new Card(melbaClient.getFirstName() + " " + melbaClient.getLastName(),
                     CardType.DEBIT,
                     CardColor.GOLD,
-                    "2860 1764 3015 6983",
+                    "2860-1764-3015-6983",
                     795,
                     LocalDate.now(),
                     LocalDate.now().plusYears(5));
@@ -72,7 +72,7 @@ public class HomebankingApplication {
             Card titaniumCredit001 = new Card(melbaClient.getFirstName() + " " + melbaClient.getLastName(),
                     CardType.CREDIT,
                     CardColor.TITANIUM,
-                    "4680 5921 7653 6645",
+                    "4680-5921-7653-6645",
                     655,
                     LocalDate.now(),
                     LocalDate.now().plusYears(5));
@@ -80,7 +80,7 @@ public class HomebankingApplication {
             Card silverCredit001 = new Card(hectorClient.getFirstName() + " " + hectorClient.getLastName(),
                     CardType.CREDIT,
                     CardColor.SILVER,
-                    "6504 7832 4462 8511",
+                    "6504-7832-4462-8511",
                     468,
                     LocalDate.now(),
                     LocalDate.now().plusYears(5));
