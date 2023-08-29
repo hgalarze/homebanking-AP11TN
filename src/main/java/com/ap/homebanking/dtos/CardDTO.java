@@ -7,21 +7,21 @@ import java.time.LocalDate;
 
 public class CardDTO {
 
-    private long id;
+    private final long id;
 
-    private String cardHolder;
+    private final String cardHolder;
 
-    private CardType type;
+    private final CardType type;
 
-    private CardColor color;
+    private final CardColor color;
 
-    private String number;
+    private final String number;
 
-    private int cvv;
+    private final int cvv;
 
-    private LocalDate thruDate;
+    private final LocalDate thruDate;
 
-    private LocalDate fromDate;
+    private final LocalDate fromDate;
 
     public CardDTO(Card card) {
         this.id = card.getId();

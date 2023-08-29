@@ -24,14 +24,14 @@ public class Client {
     private String password;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private Set<Account> accounts = new HashSet<>();
+    private final Set<Account> accounts = new HashSet<>();
 
     // Relationship between Client and Loan
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-    private Set<ClientLoan> clientLoans = new HashSet<>();
+    private final Set<ClientLoan> clientLoans = new HashSet<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private Set<Card> cards = new HashSet<>();
+    private final Set<Card> cards = new HashSet<>();
 
 
     public Client() {

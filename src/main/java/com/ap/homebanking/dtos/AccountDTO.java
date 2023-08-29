@@ -9,10 +9,10 @@ import java.util.Set;
 
 public class AccountDTO {
 
-    private long id;
-    private String number;
-    private LocalDate creationDate;
-    private double balance;
+    private final long id;
+    private final String number;
+    private final LocalDate creationDate;
+    private final double balance;
     private Set<Transaction> transactions = new HashSet<>();
 
     public AccountDTO(Account account) {
