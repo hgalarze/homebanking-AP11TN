@@ -5,7 +5,6 @@ import com.ap.homebanking.repositories.LoanRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -16,10 +15,30 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @SpringBootTest
-class HomebankingApplicationTests {
+//@DataJpaTest
+@AutoConfigureTestDatabase(replace = NONE)
+public class RepositoriesTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Autowired
+    LoanRepository loanRepository;
 
+    @Test
+    public void existLoans(){
+
+        // Act
+        List<Loan> loans = loanRepository.findAll();
+
+        // Assert
+        assertThat(loans,is(not(empty())));
+    }
+
+    @Test
+    public void existPersonalLoan(){
+
+        // Act
+        List<Loan> loans = loanRepository.findAll();
+
+        // Assert
+        assertThat(loans, hasItem(hasProperty("name", is("Personal"))));
+    }
 }

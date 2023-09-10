@@ -7,6 +7,7 @@ import com.ap.homebanking.models.Client;
 import com.ap.homebanking.repositories.CardRepository;
 import com.ap.homebanking.services.CardService;
 import com.ap.homebanking.services.ClientService;
+import com.ap.homebanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,9 @@ public class CardServiceImplement implements CardService {
             throw new LimitExceededException("The user has reached the maximum number of cards");
         }
 
-        String cardHolder = this.getCardHolder(currentClient);
-        String cardNumber = this.generateCardNumber();
-        int cvv = this.generateCvv();
+        String cardHolder = CardUtils.getCardHolder(currentClient);
+        String cardNumber = CardUtils.getCardNumber();
+        int cvv = CardUtils.getCvv();
         LocalDate fromDate = LocalDate.now();
         LocalDate thruDate = fromDate.plusYears(MAX_CARD_VALID_YEARS);
 
@@ -50,27 +51,5 @@ public class CardServiceImplement implements CardService {
 
         currentClient.addCard(newCard);
         cardRepository.save(newCard);
-    }
-
-    private String getCardHolder(Client client) {
-        return String.format("%s %s", client.getFirstName(), client.getLastName());
-    }
-
-    private String generateCardNumber() {
-
-        Random random = new Random(System.currentTimeMillis());
-
-        int cardNumber1 = 1000 + random.nextInt(9000);
-        int cardNumber2 = 1000 + random.nextInt(9000);
-        int cardNumber3 = 1000 + random.nextInt(9000);
-        int cardNumber4 = 1000 + random.nextInt(9000);
-
-        return String.format("%s-%s-%s-%s", cardNumber1, cardNumber2, cardNumber3, cardNumber4);
-    }
-
-    private int generateCvv() {
-
-        Random random = new Random(System.currentTimeMillis());
-        return 100 + random.nextInt(900);
     }
 }

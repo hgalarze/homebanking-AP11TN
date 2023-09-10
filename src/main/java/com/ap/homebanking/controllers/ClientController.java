@@ -17,7 +17,7 @@ public class ClientController {
     private ClientService clientService;
 
     @Transactional
-    @RequestMapping(path = "/api/clients", method = RequestMethod.POST)
+    @PostMapping(path = "/api/clients")
     public ResponseEntity<Object> register(
             @RequestParam String firstName, @RequestParam String lastName,
             @RequestParam String email, @RequestParam String password) {
@@ -30,17 +30,17 @@ public class ClientController {
         }
     }
 
-    @RequestMapping("/api/clients")
+    @GetMapping("/api/clients")
     public List<ClientDTO> getClients() {
         return clientService.getClientsDTO();
     }
 
-    @RequestMapping("/api/clients/{id}")
+    @GetMapping("/api/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
         return clientService.getClientDTO(id);
     }
 
-    @RequestMapping("/api/clients/current")
+    @GetMapping("/api/clients/current")
     public ClientDTO getCurrentClient(Authentication authentication) {
         return clientService.getCurrentClientDTO(authentication);
     }

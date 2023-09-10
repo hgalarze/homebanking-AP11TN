@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,18 +17,18 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping("/api/accounts")
+    @GetMapping("/api/accounts")
     public List<AccountDTO> getAccounts() {
         return accountService.getAccountsDTO();
     }
 
-    @RequestMapping("/api/accounts/{id}")
+    @GetMapping("/api/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id) {
         return accountService.getAccountDTO(id);
     }
 
     @Transactional
-    @RequestMapping(value = "/api/clients/current/accounts", method = RequestMethod.POST)
+    @PostMapping(value = "/api/clients/current/accounts")
     public ResponseEntity<Object> createAccount(Authentication authentication) {
         try {
             accountService.createAccount(authentication);
@@ -41,7 +38,7 @@ public class AccountController {
         }
     }
 
-    @RequestMapping(value = "/api/clients/current/accounts")
+    @GetMapping(value = "/api/clients/current/accounts")
     public List<AccountDTO> getCurrentUserAccounts(Authentication authentication) {
         return accountService.getCurrentUserAccountsDTO(authentication);
     }
